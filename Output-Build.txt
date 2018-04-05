@@ -1,0 +1,6 @@
+﻿1>------ Build started: Project: CIS2013_Week10_Homework1, Configuration: Debug Win32 ------
+1>Mine.cpp
+1>f:\google drive\spring2018\c++\cis2013_week10_homework1\cis2013_week10_homework1\mine.cpp(76): warning C4551: function call missing argument list
+1>LINK : fatal error LNK1168: cannot open F:\Google Drive\spring2018\C++\CIS2013_Week10_Homework1\Debug\CIS2013_Week10_Homework1.exe for writing
+1>Done building project "CIS2013_Week10_Homework1.vcxproj" -- FAILED.
+========== Build: 0 succeeded, 1 failed, 0 up-to-date, 0 skipped ==========

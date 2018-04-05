@@ -1,7 +1,9 @@
 #include <iostream>
+#include<stdlib.h>
+#include<time.h>
 using namespace std;
 
-void drawStart(int x, int y) {
+void drawStart(int x, int y, int bomb) {
 
 
 	/*for (int x = 0; x < 10; x++) {
@@ -16,15 +18,28 @@ void drawStart(int x, int y) {
 	for (int i = 0; i < y; ++i)
 		board[i] = new char[x];
 
+	//creates dynamically allocated multidimensional array for board
+	char** key = new char*[y];
+	for (int i = 0; i < y; ++i)
+		key[i] = new char[x];
+
 	//assigns same char to every address in array
 	for (int a = 0; a < y; a++) {
 		for (int b = 0; b < x; b++) {
-			board[a][b] = '^';
+			board[b][a] = '.';
 		}
 	}
 
 	//writes array to board- or breaks everything
-	cout << "   1 2 3 4 5 6 7 8 9 10\n";
+	cout << "    ";
+	for (int i = 1; i <= y;i++) {
+		if (i > 9) {
+			cout << i << " ";
+		}
+		else { cout << i << "  "; }
+	}
+	cout << endl;
+
 	for (int a = 0; a < x; a++) {
 		if (a < 9) {
 			cout << " ";
@@ -33,22 +48,95 @@ void drawStart(int x, int y) {
 
 		for (int b = 0; b < y; b++) {
 			//writes board array
-			cout << " " << board[a][b];
+			cout << "  " << board[a][b];
 		}
 		cout << endl;
 	}
 
-	//clean up
-	for (int i = 0; i < y; ++i) {
-		delete[] board[i];
+	//generates key 
+	for (int a = 0; a < y; a++) {
+		for (int b = 0; b < x; b++) {
+			key[b][a] = '0';
+		}
 	}
-	delete[] board;
-	
+	//adds random bombs
+	for (int i = 0; i < bomb; i++) {
+		int num1 = rand() % x;
+		int num2 = rand() % y;
+		key[num1][num2] = '1';
+
+	}
+
+	//gets user selection 
+	char userIn = '-';
+	int xin, yin;
+	while (userIn != 'x') {
+		cout << "\nPress 's' to flag a location with no bomb, 'd' to dig up a square, or 'x' to exit.";
+		cin >> userIn;
+		if (userIn == 'x') {
+			exit;
+		}
+		else if (userIn == 's') {
+			cout << "\nEnter coordinates ";
+			cin >> xin >> yin;
+			board[xin-1][yin-1] = '@';
+		}
+
+		else if (userIn == 'd') {
+			cout << "\nEnter coordinates ";
+			cin >> xin >> yin;
+			if (key[xin-1][yin-1] == 0) {
+				
+				board[xin-1][yin-1] = '-';
+			}
+			else if (key[xin - 1][yin - 1] == 1) {
+
+				board[xin - 1][yin - 1] = '*';
+				cout << "You died!";
+				exit;
+			}
+		}
+
+		//writes board again
+		cout << "\n    ";
+		for (int i = 1; i <= y; i++) {
+			if (i > 9) {
+				cout << i << " ";
+			}
+			else { cout << i << "  "; }
+		}
+		cout << endl;
+
+		for (int a = 0; a < x; a++) {
+			if (a < 9) {
+				cout << " ";
+			}
+			cout << a + 1;
+
+			for (int b = 0; b < y; b++) {
+				//writes board array
+				cout << "  " << board[a][b];
+			}
+			cout << endl;
+		}
+
+	}
+
+
+	////clean up
+	//for (int a = 0; a < y; a++) {
+	//	for (int b = 0; b < x; b++) {
+	//		delete[] board[a][b];
+	//	}
+	//	//delete[] board[a];
+	//}
+
+
 }
 
 int main() {
 	char keepGoing = 'y';
-	int gridX, gridY;
+	int gridX, gridY, bombs;
 	bool ingo = true;
 
 	while (keepGoing == 'y') {
@@ -57,7 +145,9 @@ int main() {
 		cin >> gridX >> gridY;
 		/*gridX = gridX - 1;
 		gridY = gridY - 1;*/
-		drawStart(gridX, gridY);
+		cout << "\nHow many bombs should there be?";
+		cin >> bombs;
+		drawStart(gridX, gridY, bombs);
 
 
 
